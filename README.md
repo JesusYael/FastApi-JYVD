@@ -13,6 +13,7 @@ $ git add .
 ## Crear un commit con los cambios
 ```bash
 git commit -m "UPDATED estructura del proyecto"
+```
 
 
 ## Actualizar el repositorio de GitHub
