@@ -10,6 +10,11 @@ sudo apt install python3 python3-pip
 $ git add .
 ```
 
+## Crear un commit con los cambios
+```bash
+git commit -m "UPDATED estructura del proyecto"
+
+
 ## Actualizar el repositorio de GitHub
 ```bash
 $ git push - u origin main
