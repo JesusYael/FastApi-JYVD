@@ -34,3 +34,27 @@ uname -a
 sudo apt install neofetch
 neofech
 ```
+## Instalar librerias desde un archivo de texto
+
+```bash
+pip3 install -r *nombre del archivo*
+```
+
+## Ver las librerias de las versiones instaladas de las librerias y dependencias
+
+```bash
+pip3 freeze
+```
+
+## Mandar la salida del comando hacia otro archivo
+
+```bash
+pip3 freeze>*nombre del archivo*
+```
+
+## Crear una base de datos y mandar el scrip
+
+```bash
+sqlite3 base.db<base.sql
+```
+
