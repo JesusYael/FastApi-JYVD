@@ -1,5 +1,12 @@
 # FastApi-JYVD
 
+easyWSL
+
+## Instalar fastapi 
+```bash
+pip install fastapi uvicorn
+```
+
 ## Instalar python3 y PIP
 ```bash
 sudo apt install python3 python3-pip
@@ -15,12 +22,28 @@ $ git add .
 git commit -m "UPDATED estructura del proyecto"
 ```
 
-
-## Actualizar el repositorio de GitHub
+## Actualizar los cambios uniendo ambas partes
 ```bash
-$ git push - u origin main
+$ git merge
 ```
-## 
+
+## Actualizar el repositorio en GitHub
+```bash
+$ git push -u origin main
+```
+
+## Actualizar todo los cambios de la maquina a GitHub de forma forzada
+
+```bash
+$ git push -f origin main
+```
+## Sincronizar todo el trabajo de github
+
+```bash
+$ git pull
+```
+
+
 
 ## Verificar el SO
 
@@ -57,4 +80,19 @@ pip3 freeze>*nombre del archivo*
 ```bash
 sqlite3 base.db<base.sql
 ```
+## Ver procesos
 
+```bash
+ps -a
+```
+
+## Terminar un proceso
+
+```bash
+kill *PID*
+```
+## Terminar procesos forzandolo
+
+```bash
+kill -9 *PID*
+```
