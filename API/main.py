@@ -62,3 +62,20 @@ async def get_contactos():
 		status_code=status.HTTP_400_BAD_REQUEST,
 		detail="Error al consultar los datos"
 		)
+
+async def get_contactos_id(id_contacto: int):
+	try:
+		with sqlite3.connect("API/sql/contactos.db") as connection:
+			connection.row_factory=sqlite3.Row
+			cursor=connection.cursor()
+			cursor.execute("SELECT id_contacto,nombre,email,telefono FROM contactos where id_contacto= 'id_contacto';")
+			response=cursor.Fetchall()
+			return response
+	except Exeception as error:
+		print(f"Error interno: {error.args}")
+		raise HTTPException(
+		status_code=status.HTTP_400_BAD_REQUEST,
+		detail="Error al consultar los datos"
+		)
+
+
