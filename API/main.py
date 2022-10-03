@@ -15,9 +15,14 @@ class Contactos(BaseModel):
 	email:str
 	telefono:str
 
+class Contacto_Post(BaseModel):
+	nombre:str
+	email:str
+	telefono:str
+
 description= """
 	#Contactos Api REST
-	API para crar un CRUD
+	API para crear un CRUD
 	de la tabla contactos
 	"""
 app= FastAPI(
@@ -54,24 +59,34 @@ async def get_contactos():
 			connection.row_factory=sqlite3.Row
 			cursor=connection.cursor()
 			cursor.execute("SELECT id_contacto,nombre,email,telefono FROM contactos;")
-			response=cursor.Fetchall()
+			response=cursor.fetchall()
 			return response
-	except Exeception as error:
+	except Exception as error:
 		print(f"Error interno: {error.args}")
 		raise HTTPException(
 		status_code=status.HTTP_400_BAD_REQUEST,
 		detail="Error al consultar los datos"
 		)
 
-async def get_contactos_id(id_contacto: int):
+@app.get(
+	"/contactos/{id_contacto}",
+	response_model= Contactos,
+	status_code= status.HTTP_202_ACCEPTED,
+	summary="lista de contactos",
+	description="endpoint que regresara un array con el contacto ingresado",
+)		
+
+async def get_contacto_id(id_contacto: int):
 	try:
 		with sqlite3.connect("API/sql/contactos.db") as connection:
 			connection.row_factory=sqlite3.Row
 			cursor=connection.cursor()
-			cursor.execute("SELECT id_contacto,nombre,email,telefono FROM contactos where id_contacto= 'id_contacto';")
-			response=cursor.Fetchall()
+			sql=("SELECT id_contacto,nombre,email,telefono FROM contactos WHERE id_contacto= ?;")
+			values=(id_contacto,)
+			cursor.execute(sql,values)
+			response=cursor.fetchone()
 			return response
-	except Exeception as error:
+	except Exception as error:
 		print(f"Error interno: {error.args}")
 		raise HTTPException(
 		status_code=status.HTTP_400_BAD_REQUEST,

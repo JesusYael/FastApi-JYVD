@@ -1,5 +1,6 @@
 # FastApi-JYVD
 
+from fastapi.responses import JSONResponse
 easyWSL
 
 ## Instalar fastapi 
