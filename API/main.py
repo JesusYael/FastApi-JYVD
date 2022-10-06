@@ -15,7 +15,7 @@ class Contactos(BaseModel):
 	email:str
 	telefono:str
 
-class Contacto_Post(BaseModel):
+class Contacto_post(BaseModel):
 	nombre:str
 	email:str
 	telefono:str
@@ -83,6 +83,31 @@ async def get_contacto_id(id_contacto: int):
 			cursor=connection.cursor()
 			sql=("SELECT id_contacto,nombre,email,telefono FROM contactos WHERE id_contacto= ?;")
 			values=(id_contacto,)
+			cursor.execute(sql,values)
+			response=cursor.fetchone()
+			return response
+	except Exception as error:
+		print(f"Error interno: {error.args}")
+		raise HTTPException(
+		status_code=status.HTTP_400_BAD_REQUEST,
+		detail="Error al consultar los datos"
+		)
+
+@app.post(
+	"/contactos/",
+	response_model=Contacto_post,
+	status_code= status.HTTP_202_ACCEPTED,
+	summary="lista de contactos",
+	description="endpoint que ingresara un nuevo contacto",
+)		
+
+async def get_contacto_post(nombre: str, email:str, telefono:str):
+	try:
+		with sqlite3.connect("API/sql/contactos.db") as connection:
+			connection.row_factory=sqlite3.Row
+			cursor=connection.cursor()
+			sql=("INSERT INTO contactos (nombre,email,telefono) VALUES ()")
+			values=(nombre,email,telefono,)
 			cursor.execute(sql,values)
 			response=cursor.fetchone()
 			return response
