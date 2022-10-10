@@ -118,4 +118,29 @@ async def get_contacto_post(Contactos: Contacto_post):
 		detail="Error al insertar contacto"
 		)
 
+@app.put(
+	"/contactos/{id_contacto}",
+	response_model= Mensaje,
+	status_code= status.HTTP_202_ACCEPTED,
+	summary="lista de contactos",
+	description="endpoint que ingresara un nuevo contacto",
+)		
+
+async def get_contacto_put(id_contacto: int, Contactos:Contactop):
+	try:
+		with sqlite3.connect("API/sql/contactos.db") as connection:
+			connection.row_factory=sqlite3.Row
+			cursor=connection.cursor()
+			sql=("UPDATE contactos SET (?, ?, ?) WHEN id_contacto= ?;")
+			values= (id_contacto, Contactos.nombre, Contactos.email, Contactos.telefono, )
+			cursor.execute(sql,values)
+			response={"mensaje":"Contacto actualizado"}
+			return response
+	except Exception as error:
+		print(f"Error interno: {error.args}")
+		raise HTTPException(
+		status_code=status.HTTP_400_BAD_REQUEST,
+		detail="Error al actualizar contacto"
+		)
+
 
