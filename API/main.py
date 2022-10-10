@@ -95,7 +95,7 @@ async def get_contacto_id(id_contacto: int):
 
 @app.post(
 	"/contactos/",
-	response_model=Contacto_post,
+	response_model=Mensaje,
 	status_code= status.HTTP_202_ACCEPTED,
 	summary="lista de contactos",
 	description="endpoint que ingresara un nuevo contacto",
@@ -106,16 +106,16 @@ async def get_contacto_post(Contactos: Contacto_post):
 		with sqlite3.connect("API/sql/contactos.db") as connection:
 			connection.row_factory=sqlite3.Row
 			cursor=connection.cursor()
-			sql=("INSERT INTO contactos (nombre,email,telefono) VALUES (?,?,?)")
-			values=(Contactos.nombre,Contactos.email,Contactos.telefono,)
+			sql=("INSERT INTO contactos VALUES (NULL, ?, ?, ?);")
+			values= (Contactos.nombre, Contactos.email, Contactos.telefono, )
 			cursor.execute(sql,values)
-			response=cursor.fetchone()
+			response={"mensaje":"Contacto registrado"}
 			return response
 	except Exception as error:
 		print(f"Error interno: {error.args}")
 		raise HTTPException(
 		status_code=status.HTTP_400_BAD_REQUEST,
-		detail="Error al consultar los datos"
+		detail="Error al insertar contacto"
 		)
 
 
