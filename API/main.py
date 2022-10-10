@@ -101,13 +101,13 @@ async def get_contacto_id(id_contacto: int):
 	description="endpoint que ingresara un nuevo contacto",
 )		
 
-async def get_contacto_post(nombre: str, email:str, telefono:str):
+async def get_contacto_post(Contactos: Contacto_post):
 	try:
 		with sqlite3.connect("API/sql/contactos.db") as connection:
 			connection.row_factory=sqlite3.Row
 			cursor=connection.cursor()
-			sql=("INSERT INTO contactos (nombre,email,telefono) VALUES ()")
-			values=(nombre,email,telefono,)
+			sql=("INSERT INTO contactos (nombre,email,telefono) VALUES (?,?,?)")
+			values=(Contactos.nombre,Contactos.email,Contactos.telefono,)
 			cursor.execute(sql,values)
 			response=cursor.fetchone()
 			return response
