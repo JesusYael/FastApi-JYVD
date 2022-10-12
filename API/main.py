@@ -50,7 +50,7 @@ async def read_root():
 	"/contactos/",
 	response_model= List[Contactos],
 	status_code= status.HTTP_202_ACCEPTED,
-	summary="lista de contactos",
+	summary="Lista de contactos",
 	description="endpoint que regresara un array con todos los contactos",
 )
 async def get_contactos():
@@ -72,7 +72,7 @@ async def get_contactos():
 	"/contactos/{id_contacto}",
 	response_model= Contactos,
 	status_code= status.HTTP_202_ACCEPTED,
-	summary="lista de contactos",
+	summary="Un contacto",
 	description="endpoint que regresara un array con el contacto ingresado",
 )		
 
@@ -97,7 +97,7 @@ async def get_contacto_id(id_contacto: int):
 	"/contactos/",
 	response_model=Mensaje,
 	status_code= status.HTTP_202_ACCEPTED,
-	summary="lista de contactos",
+	summary="Insertar un contacto",
 	description="endpoint que ingresara un nuevo contacto",
 )		
 
@@ -122,17 +122,17 @@ async def get_contacto_post(Contactos: Contacto_post):
 	"/contactos/{id_contacto}",
 	response_model= Mensaje,
 	status_code= status.HTTP_202_ACCEPTED,
-	summary="lista de contactos",
+	summary="Actualizar un contacto",
 	description="endpoint que ingresara un nuevo contacto",
 )		
 
-async def get_contacto_put(id_contacto: int, Contactos:Contactop):
+async def contacto_put(id_contacto: int, Contactos:Contacto_post):
 	try:
 		with sqlite3.connect("API/sql/contactos.db") as connection:
 			connection.row_factory=sqlite3.Row
 			cursor=connection.cursor()
-			sql=("UPDATE contactos SET (?, ?, ?) WHEN id_contacto= ?;")
-			values= (id_contacto, Contactos.nombre, Contactos.email, Contactos.telefono, )
+			sql=("UPDATE contactos VALUES (?, ?, ?) WHERE id_contacto= ?;")
+			values= (Contactos.nombre, Contactos.email, Contactos.telefono, id_contacto,)
 			cursor.execute(sql,values)
 			response={"mensaje":"Contacto actualizado"}
 			return response
@@ -141,6 +141,31 @@ async def get_contacto_put(id_contacto: int, Contactos:Contactop):
 		raise HTTPException(
 		status_code=status.HTTP_400_BAD_REQUEST,
 		detail="Error al actualizar contacto"
+		)
+
+@app.delete(
+	"/contactos/{id_contacto}",
+	response_model= Mensaje,
+	status_code= status.HTTP_202_ACCEPTED,
+	summary="Eliminar un contacto",
+	description="endpoint que ingresara un nuevo contacto",
+)		
+
+async def contacto_put(id_contacto: int):
+	try:
+		with sqlite3.connect("API/sql/contactos.db") as connection:
+			connection.row_factory=sqlite3.Row
+			cursor=connection.cursor()
+			sql=("DELETE FROM contactos WHERE id_contacto= ?;")
+			values= (id_contacto,)
+			cursor.execute(sql,values)
+			response={"mensaje":"Contacto eliminado"}
+			return response
+	except Exception as error:
+		print(f"Error interno: {error.args}")
+		raise HTTPException(
+		status_code=status.HTTP_400_BAD_REQUEST,
+		detail="Error al eliminar contacto"
 		)
 
 
