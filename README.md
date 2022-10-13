@@ -3,6 +3,14 @@
 from fastapi.responses import JSONResponse
 easyWSL
 
+class MiError(Exception):
+    pass
+def funcion (n1:int=0,n2:int=0)->int:
+    if n1<0:
+        raise MiError("N1 no puede ser negativo")
+    else:
+        return n1+n2
+
 ## Instalar fastapi 
 ```bash
 pip install fastapi uvicorn

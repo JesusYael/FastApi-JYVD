@@ -106,16 +106,23 @@ async def get_contacto_post(Contactos: Contacto_post):
 		with sqlite3.connect("API/sql/contactos.db") as connection:
 			connection.row_factory=sqlite3.Row
 			cursor=connection.cursor()
-			sql=("INSERT INTO contactos VALUES (NULL, ?, ?, ?);")
-			values= (Contactos.nombre, Contactos.email, Contactos.telefono, )
-			cursor.execute(sql,values)
-			response={"mensaje":"Contacto registrado"}
-			return response
+			con=("SELECT email FROM contactos;")
+			emails= cursor.fetchall()
+			print(emails)
+			if Contactos.email in emails:
+				response={"mensaje":"Error el email ya existe"}
+				return response
+			else:
+				sql=("INSERT INTO contactos VALUES (NULL, ?, ?, ?);")
+				values= (Contactos.nombre, Contactos.email, Contactos.telefono, )
+				cursor.execute(sql,values)
+				response={"mensaje":"Contacto registrado"}
+				return response
 	except Exception as error:
 		print(f"Error interno: {error.args}")
 		raise HTTPException(
-		status_code=status.HTTP_400_BAD_REQUEST,
-		detail="Error al insertar contacto"
+			status_code=status.HTTP_400_BAD_REQUEST,
+			detail="Error al insertar contacto"
 		)
 
 @app.put(
@@ -131,7 +138,7 @@ async def contacto_put(id_contacto: int, Contactos:Contacto_post):
 		with sqlite3.connect("API/sql/contactos.db") as connection:
 			connection.row_factory=sqlite3.Row
 			cursor=connection.cursor()
-			sql=("UPDATE contactos VALUES (?, ?, ?) WHERE id_contacto= ?;")
+			sql=("UPDATE contactos SET nombre= ?,email= ?,telefono= ? WHERE id_contacto= ?;")
 			values= (Contactos.nombre, Contactos.email, Contactos.telefono, id_contacto,)
 			cursor.execute(sql,values)
 			response={"mensaje":"Contacto actualizado"}
